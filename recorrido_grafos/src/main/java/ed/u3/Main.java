@@ -34,10 +34,10 @@ public class Main {
 
                 switch (option) {
                     case 1:
-                        loadGraph(FILE_DIRECTED, true);
+                        loadGraph(FILE_DIRECTED);
                         break;
                     case 2:
-                        loadGraph(FILE_UNDIRECTED, false);
+                        loadGraph(FILE_UNDIRECTED);
                         break;
                     case 3:
                         runBFS();
@@ -70,12 +70,12 @@ public class Main {
         scanner.close();
     }
 
-    private static void loadGraph(String filename, boolean directed) {
+    private static void loadGraph(String filename) {
         System.out.println("Intentando cargar: " + filename);
         try {
-            currentGraph = new Graph(directed);
+            currentGraph = new Graph();
             currentGraph.loadFromMatrixFile(filename);
-            System.out.println("Tipo: " + (directed ? "Dirigido" : "No Dirigido"));
+            System.out.println("Tipo: " + (currentGraph.isDirected() ? "Dirigido" : "No Dirigido"));
             System.out.println("Vértices cargados: 1 al " + currentGraph.getNumVertices());
         } catch (IOException e) {
             System.err.println("Error crítico cargando archivo: " + e.getMessage());

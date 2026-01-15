@@ -8,10 +8,11 @@ public class Graph {
     private boolean isDirected;
     private List<List<Integer>> adjList; // Lista de adyacencia
 
-    public Graph(boolean isDirected) {
-        this.isDirected = isDirected;
+    // Constructor vacío (la dirección se definirá al cargar el archivo)
+    public Graph() {
         this.adjList = new ArrayList<>();
         this.numVertices = 0;
+        this.isDirected = false; // Valor por defecto
     }
 
     // Inicializa listas vacías
@@ -25,15 +26,25 @@ public class Graph {
 
     // Agrega una arista (Edge)
     public void addEdge(int source, int destination) {
-        // Evita duplicados y verifica límites
         if (source >= 0 && source < numVertices && destination >= 0 && destination < numVertices) {
             this.adjList.get(source).add(destination);
-            // Nota: Como leemos una matriz completa, si es no dirigido la matriz ya trae la simetría,
-            // por lo que no es estrictamente necesario duplicar la arista manualmente aquí si leemos el archivo.
         }
     }
 
-    // Carga el grafo desde un archivo de Matriz de Adyacencia
+    /**
+     * Valida si una matriz es simétrica.
+     */
+    private static boolean isSymmetric(int matriz[][]) {
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = i; j < matriz.length; j++) {
+                if (matriz[i][j] != matriz[j][i])
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    // Carga el grafo y define si es Dirigido o No Dirigido automáticamente
     public void loadFromMatrixFile(String fileName) throws IOException {
         File file = new File(fileName);
         if (!file.exists()) {
@@ -55,21 +66,45 @@ public class Graph {
         }
 
         int rows = lines.size();
-        initGraph(rows);
+        int[][] tempMatrix = new int[rows][rows]; // Matriz temporal
 
+        // 1. Cargar datos y VALIDAR QUE SEA CUADRADA
         for (int i = 0; i < rows; i++) {
             String[] tokens = lines.get(i);
-            for (int j = 0; j < tokens.length; j++) {
+
+            if (tokens.length != rows) {
+                throw new IOException("Error de formato: La matriz no es cuadrada. Fila " + (i + 1) + " tiene " + tokens.length + " columnas, se esperaban " + rows + ".");
+            }
+
+            for (int j = 0; j < rows; j++) {
                 try {
-                    int val = Integer.parseInt(tokens[j]);
-                    if (val == 1) {
-                        addEdge(i, j);
-                    }
+                    tempMatrix[i][j] = Integer.parseInt(tokens[j]);
                 } catch (NumberFormatException e) {
-                    System.err.println("Advertencia: Valor no numérico en fila " + i + ", col " + j);
+                    throw new IOException("Error: Valor no numérico en fila " + i + ", col " + j);
                 }
             }
         }
+
+        // 2. DETERMINAR SI ES DIRIGIDO O NO (Basado en Simetría)
+        if (isSymmetric(tempMatrix)) {
+            this.isDirected = false;
+            System.out.println(">> Análisis: Matriz Simétrica. Configurando grafo como NO DIRIGIDO.");
+        } else {
+            this.isDirected = true;
+            System.out.println(">> Análisis: Matriz No Simétrica. Configurando grafo como DIRIGIDO.");
+        }
+
+        // 3. Construir el Grafo (Lista de Adyacencia)
+        initGraph(rows);
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < rows; j++) {
+                // Asumimos que cualquier valor distinto de 0 es una arista
+                if (tempMatrix[i][j] != 0) {
+                    addEdge(i, j);
+                }
+            }
+        }
+
         System.out.println(">> Grafo cargado exitosamente: " + numVertices + " vértices.");
     }
 
