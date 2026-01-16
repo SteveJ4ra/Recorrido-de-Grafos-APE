@@ -17,7 +17,7 @@ Este proyecto implementa una estructura de datos de **Grafo** en Java, utilizand
     * **Detección de Ciclos:** Algoritmos diferenciados para grafos dirigidos (pila de recursión) y no dirigidos (verificación de padre).
     * **Conectividad:** Conteo de componentes conexas (islas) para determinar si el grafo está totalmente conectado.
 
-## 📂 Estructura del Proyecto
+## Estructura del Proyecto
 
 El código fuente se encuentra bajo el paquete `ed.u3`:
 
@@ -26,7 +26,7 @@ El código fuente se encuentra bajo el paquete `ed.u3`:
 * `Main.java`: Interfaz de línea de comandos (CLI) para interactuar con el usuario.
 * `data/`: Carpeta contenedora de los archivos `.txt` de prueba.
 
-## ⚙️ Requisitos y Ejecución
+## Requisitos y Ejecución
 
 ### Requisitos Previos
 * Java Development Kit (JDK) 17 o superior.
