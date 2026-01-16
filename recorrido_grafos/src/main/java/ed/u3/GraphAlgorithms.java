@@ -4,21 +4,7 @@ import java.util.*;
 
 public class GraphAlgorithms {
 
-    // --- Estructuras para BFS ---
-    public static class BFSResult {
-        public List<Integer> visitOrder = new ArrayList<>();
-        public int[] distances;
-        public int[] parents;
-
-        public BFSResult(int n) {
-            distances = new int[n];
-            parents = new int[n];
-            Arrays.fill(distances, -1);
-            Arrays.fill(parents, -1);
-        }
-    }
-
-    // --- BFS (Ya lo tenías) ---
+    // --- BFS 
     public static BFSResult bfs(Graph graph, int startNode) {
         int n = graph.getNumVertices();
         BFSResult result = new BFSResult(n);
@@ -48,7 +34,7 @@ public class GraphAlgorithms {
         return result;
     }
 
-    // --- DFS (Ya lo tenías) ---
+    // --- DFS ---
     public static List<Integer> dfs(Graph graph, int startNode) {
         List<Integer> visitOrder = new ArrayList<>();
         int n = graph.getNumVertices();
@@ -80,7 +66,7 @@ public class GraphAlgorithms {
 
         for (int i = 0; i < n; i++) {
             if (!visited[i]) {
-                // Iniciamos un DFS/BFS desde aquí para marcar toda la isla
+                // Iniciamos un DFS desde aquí para marcar toda la isla
                 count++;
                 countComponentsDFS(graph, i, visited);
             }
@@ -143,7 +129,7 @@ public class GraphAlgorithms {
                     return true;
                 }
             } else if (recStack[v]) {
-                // Si el vecino YA está en el stack actual, es un ciclo (back-edge)
+                // Si el vecino YA está en el stack actual, es un ciclo 
                 return true;
             }
         }
@@ -166,5 +152,19 @@ public class GraphAlgorithms {
             }
         }
         return false;
+    }
+    
+     //  Estructuras para BFS 
+    public static class BFSResult {
+        public List<Integer> visitOrder = new ArrayList<>();
+        public int[] distances;
+        public int[] parents;
+
+        public BFSResult(int n) {
+            distances = new int[n];
+            parents = new int[n];
+            Arrays.fill(distances, -1);
+            Arrays.fill(parents, -1);
+        }
     }
 }

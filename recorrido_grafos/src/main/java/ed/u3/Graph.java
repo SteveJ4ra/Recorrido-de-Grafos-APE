@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.*;
 
 public class Graph {
+
     private int numVertices;
     private boolean isDirected;
     private List<List<Integer>> adjList; // Lista de adyacencia
@@ -26,8 +27,16 @@ public class Graph {
 
     // Agrega una arista (Edge)
     public void addEdge(int source, int destination) {
-        if (source >= 0 && source < numVertices && destination >= 0 && destination < numVertices) {
-            this.adjList.get(source).add(destination);
+        List<Integer> neighbors = adjList.get(source);
+        if (!neighbors.contains(destination)) {
+            neighbors.add(destination);
+        }
+        // Para grafos NO dirigidos
+        if (!isDirected && source != destination) {
+            List<Integer> inverseNeighbors = adjList.get(destination);
+            if (!inverseNeighbors.contains(source)) {
+                inverseNeighbors.add(source);
+            }
         }
     }
 
@@ -37,8 +46,9 @@ public class Graph {
     private static boolean isSymmetric(int matriz[][]) {
         for (int i = 0; i < matriz.length; i++) {
             for (int j = i; j < matriz.length; j++) {
-                if (matriz[i][j] != matriz[j][i])
+                if (matriz[i][j] != matriz[j][i]) {
                     return false;
+                }
             }
         }
         return true;
@@ -85,7 +95,7 @@ public class Graph {
             }
         }
 
-        // 2. DETERMINAR SI ES DIRIGIDO O NO (Basado en Simetría)
+        // 2. DETERMINAR SI ES DIRIGIDO O NO
         if (isSymmetric(tempMatrix)) {
             this.isDirected = false;
             System.out.println(">> Análisis: Matriz Simétrica. Configurando grafo como NO DIRIGIDO.");
@@ -94,7 +104,7 @@ public class Graph {
             System.out.println(">> Análisis: Matriz No Simétrica. Configurando grafo como DIRIGIDO.");
         }
 
-        // 3. Construir el Grafo (Lista de Adyacencia)
+        // 3. Construir el Grafo
         initGraph(rows);
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < rows; j++) {
@@ -109,7 +119,15 @@ public class Graph {
     }
 
     // Getters
-    public int getNumVertices() { return numVertices; }
-    public List<Integer> getNeighbors(int v) { return adjList.get(v); }
-    public boolean isDirected() { return isDirected; }
+    public int getNumVertices() {
+        return numVertices;
+    }
+
+    public List<Integer> getNeighbors(int v) {
+        return adjList.get(v);
+    }
+
+    public boolean isDirected() {
+        return isDirected;
+    }
 }

@@ -10,6 +10,7 @@ public class Main {
     // Rutas de archivos
     private static final String FILE_DIRECTED = "src/main/java/ed/u3/data/g_dirigido_matriz.txt";
     private static final String FILE_UNDIRECTED = "src/main/java/ed/u3/data/g_nodirigido_matriz.txt";
+    private static final String CUSTOM_FILE = "src/main/java/ed/u3/data/         .txt";
 
     private static Graph currentGraph = null;
     private static Scanner scanner = new Scanner(System.in);
@@ -20,6 +21,7 @@ public class Main {
         while (running) {
             printHeader("LABORATORIO 8: ALGORITMOS DE GRAFOS (BFS/DFS)");
             System.out.println("Ruta configurada: src/main/java/ed/u3/data/");
+            System.out.println("0. Cargar Grafo desde archivo personalizado");
             System.out.println("1. Cargar Grafo DIRIGIDO");
             System.out.println("2. Cargar Grafo NO DIRIGIDO");
             System.out.println("3. Ejecutar BFS (Anchura)");
@@ -33,6 +35,9 @@ public class Main {
                 int option = Integer.parseInt(input);
 
                 switch (option) {
+                    case 0:
+                        loadGraph(CUSTOM_FILE);
+                        break;
                     case 1:
                         loadGraph(FILE_DIRECTED);
                         break;
@@ -91,7 +96,9 @@ public class Main {
         }
 
         int startNodeInternal = askForStartNode();
-        if (startNodeInternal == -1) return;
+        if (startNodeInternal == -1) {
+            return;
+        }
 
         long startTime = System.nanoTime();
         GraphAlgorithms.BFSResult result = GraphAlgorithms.bfs(currentGraph, startNodeInternal);
@@ -102,7 +109,7 @@ public class Main {
         System.out.println("Orden de Visita: " + formatListToBase1(result.visitOrder));
 
         System.out.println("\n" + String.format("%-10s | %-10s | %-10s", "Vértice", "Distancia", "Padre"));
-        System.out.println(new String(new char[36]).replace("\0", "-"));
+        System.out.println(new String (new char[36]).replace("\0", "-"));
 
         for (int i = 0; i < currentGraph.getNumVertices(); i++) {
             int vertexDisplay = i + 1;
@@ -124,7 +131,9 @@ public class Main {
         }
 
         int startNodeInternal = askForStartNode();
-        if (startNodeInternal == -1) return;
+        if (startNodeInternal == -1) {
+            return;
+        }
 
         long startTime = System.nanoTime();
         List<Integer> order = GraphAlgorithms.dfs(currentGraph, startNodeInternal);
@@ -135,7 +144,6 @@ public class Main {
         System.out.println("Orden de Visita: " + formatListToBase1(order));
     }
 
-    // --- NUEVA FUNCIÓN PARA OPCIÓN 5 ---
     private static void runAnalysis() {
         if (currentGraph == null) {
             System.out.println("Error: Primero cargue un grafo.");
