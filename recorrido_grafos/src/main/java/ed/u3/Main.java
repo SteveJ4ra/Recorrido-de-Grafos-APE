@@ -8,9 +8,9 @@ import java.util.stream.Collectors;
 public class Main {
 
     // Rutas de archivos
-    private static final String FILE_DIRECTED = "src/main/java/ed/u3/data/g_dirigido_matriz.txt";
-    private static final String FILE_UNDIRECTED = "src/main/java/ed/u3/data/g_nodirigido_matriz.txt";
-    private static final String CUSTOM_FILE = "src/main/java/ed/u3/data/         .txt";
+    private static final String FILE_DIRECTED = "recorrido_grafos/src/main/java/ed/u3/data/g_dirigido_matriz.txt";
+    private static final String FILE_UNDIRECTED = "recorrido_grafos/src/main/java/ed/u3/data/g_nodirigido_matriz.txt";
+    private static final String CUSTOM_FILE = "recorrido_grafos/src/main/java/ed/u3/data/.txt";
 
     private static Graph currentGraph = null;
     private static Scanner scanner = new Scanner(System.in);
