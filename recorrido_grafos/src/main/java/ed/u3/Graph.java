@@ -27,6 +27,14 @@ public class Graph {
 
     // Agrega una arista (Edge)
     public void addEdge(int source, int destination) {
+        // FALTA VALIDAR RANGOS - CRÍTICO
+        if (source < 0 || source >= numVertices
+                || destination < 0 || destination >= numVertices) {
+            throw new IndexOutOfBoundsException(
+                    "Vértice fuera de rango. Máximo: " + (numVertices - 1)
+            );
+        }
+
         List<Integer> neighbors = adjList.get(source);
         if (!neighbors.contains(destination)) {
             neighbors.add(destination);
@@ -106,11 +114,22 @@ public class Graph {
 
         // 3. Construir el Grafo
         initGraph(rows);
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < rows; j++) {
-                // Asumimos que cualquier valor distinto de 0 es una arista
-                if (tempMatrix[i][j] != 0) {
-                    addEdge(i, j);
+        if (isDirected) {
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < rows; j++) {
+                    if (tempMatrix[i][j] != 0) {
+                        addEdge(i, j);
+                    }
+                }
+            }
+        } else {
+            // Solo triangular superior para evitar duplicados
+            for (int i = 0; i < rows; i++) {
+                for (int j = i; j < rows; j++) {
+                    if (tempMatrix[i][j] != 0) {
+                        addEdge(i, j);
+                        // addEdge ya agregará la inversa si es no dirigido
+                    }
                 }
             }
         }
